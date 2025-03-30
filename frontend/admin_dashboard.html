@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color:white;
+        }
+        .header {
+            background: #007bff;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        .content {
+            margin: 20px auto;
+            max-width: 800px;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid white;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background: #007bff;
+            color: white;
+        }
+        button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .approve-btn {
+            background: #28a745;
+            color: white;
+        }
+        .reject-btn {
+            background: #dc3545;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Admin Dashboard</h1>
+    </div>
+    <div class="content">
+        <h2>Pending User Approvals</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Middle Name</th>
+                    <th>Last Name</th>
+                    <th>Age</th>
+                    <th>Gender</th>
+                    <th>Country</th>
+                    <th>Approval Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="userTable">
+                <!-- User rows will be dynamically populated -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const userTable = document.getElementById("userTable");
+
+        // Redirect to login if no token is found
+        if (!localStorage.getItem("adminToken")) {
+            alert("You are not logged in. Redirecting to login page...");
+            window.location.href = "admin_login.html"; // Replace with your admin login page
+        }
+
+        // Fetch users from the backend
+        async function fetchUsers() {
+            try {
+                const token = localStorage.getItem("adminToken");
+                console.log("Admin Token:", token); // Debug log
+
+                const response = await fetch("http://localhost:5000/admin/getPendingUsers", {
+                    method: "GET",
+                    headers: {
+                        "Authorization": "Bearer " + token,
+                        "Content-Type": "application/json"
+                    }
+                });
+
+                if (!response.ok) {
+                    if (response.status === 401 || response.status === 400) {
+                        alert("Session expired or unauthorized. Redirecting to login page...");
+                        localStorage.removeItem("adminToken"); // Clear invalid token
+                        window.location.href = "admin_login.html"; // Redirect to login page
+                    }
+                    throw new Error("Failed to fetch users");
+                }
+
+                const data = await response.json();
+                if (data.success) {
+                    populateTable(data.users);
+                } else {
+                    alert("Error: " + data.message);
+                }
+            } catch (error) {
+                console.error("Error fetching users:", error);
+                alert("An error occurred while fetching users.");
+            }
+        }
+
+        // Populate the table with user data
+        function populateTable(users) {
+            userTable.innerHTML = ""; // Clear table content
+
+            users.forEach((user, index) => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${user.firstName}</td>
+                    <td>${user.middleName || "N/A"}</td>
+                    <td>${user.lastName}</td>
+                    <td>${user.age}</td>
+                    <td>${user.gender}</td>
+                    <td>${user.country}</td>
+                    <td>${user.approvalStatus}</td>
+                    <td>
+                        <button class="approve-btn" onclick="approveUser('${user._id}')">Approve</button>
+                        <button class="reject-btn" onclick="rejectUser('${user._id}')">Reject</button>
+                    </td>
+                `;
+                userTable.appendChild(row);
+            });
+        }
+
+        // Approve user
+        async function approveUser(userId) {
+            try {
+                const response = await fetch("http://localhost:5000/admin/approveUser", {
+                    method: "POST",
+                    headers: {
+                        "Authorization": "Bearer " + localStorage.getItem("adminToken"),
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ userId }) // Ensure userId is sent
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    alert(`User approved successfully with Unique ID: ${data.uniqueId}`);
+                    fetchUsers(); // Refresh the table
+                } else {
+                    alert("Error: " + data.message);
+                }
+            } catch (error) {
+                console.error("Error approving user:", error);
+                alert("An error occurred while approving the user.");
+            }
+        }
+
+        // Reject user
+        async function rejectUser(userId) {
+            const confirmed = confirm("Are you sure you want to reject this user?");
+            if (!confirmed) return;
+
+            try {
+                const response = await fetch("http://localhost:5000/admin/rejectUser", {
+                    method: "POST",
+                    headers: {
+                        "Authorization": "Bearer " + localStorage.getItem("adminToken"),
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ userId })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    alert("User rejected successfully.");
+                    fetchUsers(); // Refresh the table
+                } else {
+                    alert("Error: " + data.message);
+                }
+            } catch (error) {
+                console.error("Error rejecting user:", error);
+                alert("An error occurred while rejecting the user.");
+            }
+        }
+
+        // Fetch users on page load
+        fetchUsers();
+    </script>
+</body>
+</html>
