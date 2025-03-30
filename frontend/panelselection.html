@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Digital Identity</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000; /* Black background */
+            color: white; /* White text */
+            margin: 0;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+        }
+        
+        /* Top Right Navigation */
+        .top-right-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .top-right-container button {
+            padding: 10px 15px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+
+        .admin-btn { background: #007bff; }
+        .signup-btn { background: #ff9900; }
+        .signin-btn { background: #28a745; }
+        .home-btn, .about-btn { background: #6c757d; }
+
+        /* Centered Home Page */
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1); /* Semi-transparent for contrast */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            width: 80%;
+            max-width: 800px;
+            margin: 100px auto 50px;
+        }
+
+        h2 {
+            font-size: 28px;
+            color: white;
+        }
+
+        p {
+            font-size: 18px;
+            color: white;
+            line-height: 1.6;
+        }
+
+        /* Scrolling Section */
+        .scroll-section {
+            padding: 50px 20px;
+            width: 100%;
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .feature {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Right Navigation -->
+    <div class="top-right-container">
+        <button class="admin-btn" onclick="redirectTo('admin_login.html')">Admin Panel</button>
+        <button class="signup-btn" onclick="redirectTo('user_signup.html')">Sign Up</button>
+        <button class="signin-btn" onclick="redirectTo('user_signin.html')">Sign In</button>
+        <button class="home-btn" onclick="showHomePage()">Home</button>
+        <button class="about-btn" onclick="showAboutPage()">About Us</button>
+    </div>
+
+    <!-- Home Page -->
+    <div id="home-page" class="container">
+        <h2>Welcome to Global Digital Identity and Border Control System</h2>
+        <p>Ensuring secure and seamless digital identity verification across borders.</p>
+    </div>
+
+    <!-- Scrolling Information Section -->
+    <div class="scroll-section">
+        <div class="feature">
+            <h2>What is Blockchain-Based Digital Identity?</h2>
+            <p>Blockchain-based digital identity ensures security, transparency, and tamper-proof identity verification. It enables individuals to control their personal data while reducing identity fraud.</p>
+        </div>
+
+        <div class="feature">
+            <h2>How Does It Work?</h2>
+            <p>Each user has a unique digital identity stored securely on a blockchain network. Governments and organizations can verify identities instantly while ensuring data privacy.</p>
+        </div>
+
+        <div class="feature">
+            <h2>Key Benefits</h2>
+            <p>🔹 Decentralized and Secure<br>
+               🔹 Reduces Identity Theft and Fraud<br>
+               🔹 Global Access with Borderless Verification<br>
+               🔹 Efficient and Time-Saving Processes</p>
+        </div>
+
+        <div class="feature">
+            <h2>Border Control Integration</h2>
+            <p>Blockchain-powered identity systems allow travelers to pass through borders faster with biometric verification, eliminating paper-based processes.</p>
+        </div>
+    </div>
+
+    <!-- About Us Page -->
+    <div id="about-page" class="container" style="display: none;">
+        <h2>About Us</h2>
+        <p>We are dedicated to providing a secure and efficient global identity management system. 
+           Our mission is to enhance border security while ensuring user privacy and convenience.</p>
+    </div>
+
+    <script>
+        function redirectTo(page) {
+            window.location.href = page;
+        }
+
+        function showHomePage() {
+            document.getElementById('home-page').style.display = 'block';
+            document.getElementById('about-page').style.display = 'none';
+        }
+
+        function showAboutPage() {
+            document.getElementById('home-page').style.display = 'none';
+            document.getElementById('about-page').style.display = 'block';
+        }
+
+        // Default: Show Home Page on Load
+        showHomePage();
+    </script>
+</body>
+</html>

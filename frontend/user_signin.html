@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Sign-In</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .signin-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .signin-btn {
+            width: 100%;
+            padding: 10px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        function signIn() {
+            const userId = document.getElementById("user_id").value;
+            const users = JSON.parse(localStorage.getItem("users")) || [];
+            const user = users.find(user => user.uniqueId === userId);
+
+            if (user) {
+                alert(`Welcome, ${user.firstName} ${user.lastName}!`);
+                // Redirect to user's dashboard or perform desired action
+            } else {
+                alert("Invalid ID. Please try again.");
+            }
+            return false; // Prevent form submission
+        }
+    </script>
+</head>
+<body>
+    <div class="signin-container">
+        <h2>User Sign-In</h2>
+        <form onsubmit="return signIn();">
+            <div class="form-group">
+                <label for="user_id">Unique ID:</label>
+                <input type="text" id="user_id" placeholder="Enter your unique ID" required>
+            </div>
+            <button type="submit" class="signin-btn">Sign In</button>
+        </form>
+    </div>
+</body>
+</html>

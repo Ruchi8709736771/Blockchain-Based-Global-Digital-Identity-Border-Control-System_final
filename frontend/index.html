@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockchain-Based Global Digital Identity</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Blockchain-Based Global Digital Identity</h1>
+    </header>
+    
+    <main>
+        <p>Join us in securing identity verification using blockchain technology.</p>
+        <div class="auth-buttons">
+            <a href="user_signin.html" class="btn">Login</a>
+            <a href="user_signup.html" class="btn">Register</a>
+            <a href="admin_login.html" class="btn">Admin Login</a>
+        </div>
+
+        <br><br><br>
+
+        <p id="typing-text"></p>
+
+        <section id="about">
+            <h2>About</h2>
+            <p>
+                Our platform provides a secure, blockchain-based identity verification system. 
+                It ensures authenticity, privacy, and security for users worldwide.
+            </p>
+        </section>
+
+        <section id="description">
+            <h2>Description</h2>
+            <p>
+                This platform utilizes blockchain technology to create a tamper-proof, decentralized digital identity system. 
+                Users can register, verify, and authenticate their identities while ensuring security and transparency.
+            </p>
+        </section>
+
+        <section id="features">
+            <h2>Features</h2>
+            <ul>
+                <li>Decentralized and tamper-proof identity verification</li>
+                <li>Secure blockchain-based authentication</li>
+                <li>User-friendly registration and login</li>
+                <li>Admin panel for identity management</li>
+                <li>Privacy-focused with encrypted data</li>
+            </ul>
+        </section>
+
+        <section id="help">
+            <h2>Help</h2>
+            <p>
+                Need assistance? Follow these steps:
+                <ul>
+                    <li>Register an account using your details.</li>
+                    <li>Verify your identity through blockchain validation.</li>
+                    <li>Login to access secure services.</li>
+                    <li>For issues, contact support.</li>
+                </ul>
+            </p>
+        </section>
+    </main>
+
+    <script>
+        const texts = [
+            "Your identity, secured by blockchain.",
+            "Ensuring privacy and security in digital identity.",
+            "Blockchain-based authentication made simple.",
+            "Say goodbye to identity fraud with our platform.",
+            "A decentralized way to prove who you are."
+        ];
+
+        let index = 0;
+        let charIndex = 0;
+        let reverse = false;
+        let currentColor = getRandomColor(); 
+
+        function getRandomColor() {
+            const colors = ["#E63946", "#F4A261", "#2A9D8F", "#457B9D", "#F77F00", "#06D6A0", "#E76F51"];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        function typeEffect() {
+            const displayText = document.getElementById("typing-text");
+
+            if (!displayText) return;
+
+            if (!reverse) {
+                displayText.innerHTML = `<span style="color: ${currentColor}">${texts[index].substring(0, charIndex++)}</span>`;
+                if (charIndex > texts[index].length) {
+                    reverse = true;
+                    setTimeout(typeEffect, 1000);
+                    return;
+                }
+            } else {
+                displayText.innerHTML = `<span style="color: ${currentColor}">${texts[index].substring(0, charIndex--)}</span>`;
+                if (charIndex === 0) {
+                    reverse = false;
+                    index = (index + 1) % texts.length; // Switch to next text
+                    currentColor = getRandomColor();
+                }
+            }
+            setTimeout(typeEffect, 100);
+        }
+
+        document.addEventListener("DOMContentLoaded", typeEffect);
+    </script>
+
+</body>
+</html>

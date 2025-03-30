@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Status</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>User Approval Status</h1>
+    <p id="status"></p>
+    <div id="signin-link"></div>
+    <script>
+        const users = JSON.parse(localStorage.getItem("users")) || [];
+        const user = users[users.length - 1]; // Assume the last registered user for this demo
+
+        if (user) {
+            document.getElementById("status").textContent = `Approval Status: ${user.approvalStatus}`;
+
+            if (user.approvalStatus === "Approved!") {
+                document.getElementById("signin-link").innerHTML = `
+                    <p>Your unique ID: <strong>${user.uniqueId || "ID not generated"}</strong></p>
+                    <a href="user_signin.html">Proceed to Sign In</a>
+                `;
+            }
+        } else {
+            document.getElementById("status").textContent = "No user data found.";
+        }
+    </script>
+</body>
+</html>
